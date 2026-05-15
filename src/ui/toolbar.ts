@@ -1,5 +1,7 @@
 import { cycleTheme, getStoredTheme, themeLabel } from './themes';
 
+const REPO_URL = 'https://gitee.com/vv777/plain-view';
+
 export interface ToolbarCallbacks {
   onRaw: (isRaw: boolean) => void;
   onCopy: () => void;
@@ -19,6 +21,7 @@ const ICONS = {
   theme:    icon('<circle cx="8" cy="8" r="4"/><line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/>'),
   prevMatch: icon('<polyline points="4 10 8 6 12 10"/>'),
   nextMatch: icon('<polyline points="4 6 8 10 12 6"/>'),
+  repo:     icon('<path d="M11 8v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"/><polyline points="9 3 13 3 13 7"/><line x1="13" y1="3" x2="7" y2="9"/>'),
 };
 
 export function createToolbar(
@@ -57,12 +60,13 @@ export function createToolbar(
   const copyBtn  = btn(ICONS.copy, '复制');
   const dlBtn    = btn(ICONS.download, '下载');
   const themeBtn = btn(ICONS.theme, `主题：${themeLabel(getStoredTheme())}`);
+  const repoBtn  = btn(ICONS.repo, '查看源码 (Gitee)');
 
   const divider = document.createElement('div');
   divider.className = 'fv-divider';
 
   if (searchBtn) right.append(searchBtn, divider.cloneNode() as HTMLElement);
-  right.append(rawBtn, copyBtn, dlBtn, divider, themeBtn);
+  right.append(rawBtn, copyBtn, dlBtn, divider, themeBtn, divider.cloneNode() as HTMLElement, repoBtn);
   toolbar.append(left, right);
 
   // ── Search Bar ────────────────────────────────────────────────
@@ -148,6 +152,10 @@ export function createToolbar(
   themeBtn.addEventListener('click', () => {
     const next = cycleTheme();
     themeBtn.dataset.tip = `主题：${themeLabel(next)}`;
+  });
+
+  repoBtn.addEventListener('click', () => {
+    window.open(REPO_URL, '_blank', 'noopener,noreferrer');
   });
 
   if (searchBtn && callbacks.onSearch) {
