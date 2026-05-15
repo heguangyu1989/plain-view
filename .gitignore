@@ -8,6 +8,9 @@ dist/
 # Packaged release artifacts
 release/
 
+# Throwaway helper scripts (prefix with _)
+scripts/_*.ps1
+
 # Editor / IDE
 .vscode/
 .idea/
