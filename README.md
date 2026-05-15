@@ -1,6 +1,6 @@
 # Plain View
 
-Chrome 扩展。把浏览器变成 **JSON / Markdown / SQL / YAML / CSV / LOG** 等文件的友好查看器:自动美化、语法高亮、可折叠树、可排序可编辑的表格、亮白/暗黑双主题 —— 全部零依赖手写实现,无需任何打包器。
+基于 Chromium 的浏览器扩展。把浏览器变成 **JSON / Markdown / SQL / YAML / CSV / LOG** 等文件的友好查看器:自动美化、语法高亮、可折叠树、可排序可编辑的表格、亮白/暗黑双主题 —— 零运行时依赖、纯手写、无打包器,**完整安装包仅 ~28 KB**。
 
 **源码仓库:** [GitHub](https://github.com/777vv/plain-view) · [Gitee](https://gitee.com/vv777/plain-view)
 
@@ -36,23 +36,38 @@ Chrome 扩展。把浏览器变成 **JSON / Markdown / SQL / YAML / CSV / LOG** 
 
 ### 2. 解压
 
-把 zip 解压到你想放置扩展的目录(后面 Chrome 加载时要指向这个目录,**不要解压完就删**)。
+把 zip 解压到你想长期放置扩展的目录(后面浏览器加载时要指向这个目录,**不要解压完就删**)。
 
-### 3. 在 Chrome 里加载扩展
+### 3. 加载扩展
 
-1. 打开 `chrome://extensions`
-2. 右上角开启 **「开发者模式」**
-3. 点击 **「加载已解压的扩展程序」**,选择上一步**解压出来的目录**(里面要能看到 `manifest.json`)
+按你用的浏览器选一边操作。
 
-加载成功后,Chrome 工具栏会出现 Plain View 的图标。
+#### 3a. Chrome
+
+1. 在地址栏打开 `chrome://extensions`
+2. **页面右上角**打开 **「开发者模式」** 开关
+3. **页面左上角**点击 **「加载未打包的扩展程序」** 按钮
+   > 部分较老版本叫「加载已解压的扩展程序」,意思一样
+4. 选择上一步**解压出来的目录**(目录里要能看到 `manifest.json`)
+
+#### 3b. Edge
+
+1. 在地址栏打开 `edge://extensions`
+2. **页面左侧边栏**找到 **「开发人员模式」** 开关并打开
+3. 这时页面**上半部分**会出现 **「加载解压缩的扩展」** 按钮,点击它
+4. 选择上一步**解压出来的目录**(目录里要能看到 `manifest.json`)
+
+加载成功后,浏览器工具栏会出现 Plain View 的图标。
 
 ### 4. (推荐)允许访问本地文件
 
 要预览**拖入浏览器的本地 `.csv` / `.tsv`** 文件,需要给扩展授予文件访问权限,否则 viewer 页面会读不到文件:
 
-1. 在 `chrome://extensions` 找到 **Plain View**
+1. 在 `chrome://extensions`(Edge 是 `edge://extensions`)找到 **Plain View**
 2. 点击 **「详细信息」**
-3. 打开 **「允许访问文件网址」** 开关
+3. 打开允许扩展访问本地文件的开关:
+   - Chrome:**「允许访问文件网址」**
+   - Edge:**「允许访问文件 URL」**
 
 ---
 
@@ -71,7 +86,7 @@ npm install
 npm run build
 ```
 
-构建产物在 `dist/` 目录,然后照「在 Chrome 里加载扩展」那一步,选**项目根目录**(含 `manifest.json` 的那一层)即可。
+构建产物在 `dist/` 目录,然后照「加载扩展」那一步,选**项目根目录**(含 `manifest.json` 的那一层)即可。
 
 另外 `npm run package` 会一并构建并产出 `release/plain-view.zip`,用于发布新版本。
 
