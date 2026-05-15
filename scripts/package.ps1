@@ -17,7 +17,7 @@ New-Item -ItemType Directory -Path $staging -Force | Out-Null
 Copy-Item 'manifest.json','popup.html','popup.css','viewer.html' $staging
 Copy-Item 'dist','styles' $staging -Recurse
 
-Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zip -Force
+Compress-Archive -Path $staging -DestinationPath $zip -Force
 Remove-Item $staging -Recurse -Force
 
 $info = Get-Item $zip

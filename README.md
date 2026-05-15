@@ -1,6 +1,6 @@
 # Plain View
 
-基于 Chromium 的浏览器扩展。把浏览器变成 **JSON / Markdown / SQL / YAML / CSV / LOG** 等文件的友好查看器:自动美化、语法高亮、可折叠树、可排序可编辑的表格、亮白/暗黑双主题 —— 零运行时依赖、纯手写、无打包器,**完整安装包仅 ~28 KB**。
+基于 Chromium 的浏览器扩展。把浏览器变成 **JSON / Markdown / SQL / YAML / CSV / LOG** 等文件的友好查看器:自动美化、语法高亮、可折叠树、可排序可编辑的表格、亮白/暗黑双主题 —— 零运行时依赖、纯手写、无打包器,**完整安装包仅 ~29 KB**。
 
 **源码仓库:** [GitHub](https://github.com/777vv/plain-view) · [Gitee](https://gitee.com/vv777/plain-view)
 
@@ -32,7 +32,7 @@
 直接下载已编译好的 zip,无需任何 Node.js / npm:
 
 - **GitHub:** [plain-view.zip(永远最新版)](https://github.com/777vv/plain-view/releases/latest/download/plain-view.zip)
-- **Gitee(国内更快):** [Releases 页面](https://gitee.com/vv777/plain-view/releases) → 下载最新一版的 `plain-view.zip`
+- **Gitee(国内更快):** [Releases 页面](https://gitee.com/vv777/plain-view/releases/plain-view.zip) → 下载最新一版的 `plain-view.zip`
 
 ### 2. 解压
 
@@ -42,7 +42,7 @@
 
 按你用的浏览器选一边操作。
 
-#### 3a. Chrome
+#### 3.1、 Chrome
 
 1. 在地址栏打开 `chrome://extensions`
 2. **页面右上角**打开 **「开发者模式」** 开关
@@ -50,7 +50,7 @@
    > 部分较老版本叫「加载已解压的扩展程序」,意思一样
 4. 选择上一步**解压出来的目录**(目录里要能看到 `manifest.json`)
 
-#### 3b. Edge
+#### 3.2、 Edge
 
 1. 在地址栏打开 `edge://extensions`
 2. **页面左侧边栏**找到 **「开发人员模式」** 开关并打开
