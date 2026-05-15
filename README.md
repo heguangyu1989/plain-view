@@ -31,8 +31,8 @@
 
 直接下载已编译好的 zip,无需任何 Node.js / npm:
 
-- **GitHub:** [plain-view.zip](https://github.com/777vv/plain-view/releases/latest/download/plain-view.zip)
-- **Gitee(国内更快):** [plain-view.zip](https://gitee.com/vv777/plain-view/releases/plain-view.zip)
+- **GitHub: ** [plain-view.zip](https://github.com/777vv/plain-view/releases/latest/download/plain-view.zip)
+- **Gitee(国内更快): ** [plain-view.zip](https://gitee.com/vv777/plain-view/releases/download/v0.1.0/plain-view.zip)
 
 ### 2. 解压
 
