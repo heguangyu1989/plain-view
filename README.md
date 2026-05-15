@@ -31,12 +31,12 @@
 
 直接下载已编译好的 zip,无需任何 Node.js / npm:
 
-- **GitHub:** [plain-view.zip(永远最新版)](https://github.com/777vv/plain-view/releases/latest/download/plain-view.zip)
-- **Gitee(国内更快):** [Releases 页面](https://gitee.com/vv777/plain-view/releases/plain-view.zip) → 下载最新一版的 `plain-view.zip`
+- **GitHub:** [plain-view.zip](https://github.com/777vv/plain-view/releases/latest/download/plain-view.zip)
+- **Gitee(国内更快):** [plain-view.zip](https://gitee.com/vv777/plain-view/releases/plain-view.zip)
 
 ### 2. 解压
 
-把 zip 解压到你想长期放置扩展的目录(后面浏览器加载时要指向这个目录,**不要解压完就删**)。
+把 zip 解压到你想长期放置扩展的目录(后面浏览器加载时要指向这个目录)。
 
 ### 3. 加载扩展
 
