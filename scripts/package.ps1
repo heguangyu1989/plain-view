@@ -11,7 +11,10 @@ $zip        = Join-Path $releaseDir 'plain-view.zip'
 if (Test-Path $releaseDir) { Remove-Item $releaseDir -Recurse -Force }
 New-Item -ItemType Directory -Path $staging -Force | Out-Null
 
-Copy-Item 'manifest.json','popup.html','popup.css','viewer.html','README.md' $staging
+# Whitelist: only files the browser actually needs at runtime.
+# Do NOT bundle docs (README/CLAUDE/PRD), git metadata (.gitignore),
+# tooling configs (tsconfig, package.json), source, or node_modules.
+Copy-Item 'manifest.json','popup.html','popup.css','viewer.html' $staging
 Copy-Item 'dist','styles' $staging -Recurse
 
 Compress-Archive -Path (Join-Path $staging '*') -DestinationPath $zip -Force

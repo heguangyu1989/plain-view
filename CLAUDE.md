@@ -66,11 +66,38 @@ popup.html / viewer.html  # 扩展页 HTML
 
 ## 打包
 
-`npm run package` 会先 `npm run build`,再调 `scripts/package.ps1` 把扩展打包成 `release/plain-view.zip`(约 30 KB)。
+`npm run package` 会先 `npm run build`,再调 `scripts/package.ps1` 把扩展打包成 `release/plain-view.zip`(约 28 KB)。
 
-zip 里只含浏览器加载所需的最小文件:`manifest.json` / `popup.{html,css}` / `viewer.html` / `dist/` / `styles/` / `README.md`;**不含**源码、`node_modules`、`tsconfig`、`package.json` 等。
+### 打包白名单(只列「浏览器加载必需」的文件)
+
+`scripts/package.ps1` 用**显式白名单**复制文件,**不要**改成全量拷贝 + 排除清单 —— 那样很容易漏掉新加的文档/配置文件,让用户多下几十 KB 没用的东西。
+
+进 zip:
+- `manifest.json`
+- `popup.html` / `popup.css`
+- `viewer.html`
+- `dist/`(所有编译产物)
+- `styles/`(所有 CSS)
+
+**不进** zip(踩过的坑,逐条记下来,新增类似文件时不要漏):
+- 文档:`README.md` / `CLAUDE.md` / `PRD.md` —— 用户下载是用扩展的,不需要看开发文档
+- git 元文件:`.gitignore` / `.git/`
+- 工具链配置:`package.json` / `package-lock.json` / `tsconfig.json`
+- 源码:`src/`
+- 依赖:`node_modules/`
+- 构建脚本:`scripts/`
 
 `release/` 已在 `.gitignore`,本地打的 zip 不会污染 git。
+
+### 验证 zip 内容
+
+发布前可以用下面这段一次性命令列出当前 zip 里的所有文件,目测是否多/少:
+
+```powershell
+Add-Type -AssemblyName System.IO.Compression.FileSystem; (
+  [System.IO.Compression.ZipFile]::OpenRead('release/plain-view.zip')
+).Entries | Sort-Object FullName | ForEach-Object FullName
+```
 
 ## 行为准则
 
