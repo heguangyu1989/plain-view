@@ -22,8 +22,6 @@ A Chromium-based browser extension that turns your browser into a friendly viewe
   - "Copy" always reflects your latest edits
 - **LOG highlighting** — auto-colors lines by `ERROR` / `WARN` / `INFO` / `DEBUG` / `TRACE`
 - **Light / dark themes** (GitHub Light + VS Code Dark), one-click toggle in the toolbar
-- **Each format can be individually enabled/disabled** — set in the extension popup, persists across pages and sessions
-- **Zero runtime dependencies** — every renderer is hand-written TypeScript; `npm run build` just runs `tsc` and a tiny post-processor
 
 ---
 

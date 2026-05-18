@@ -22,8 +22,6 @@
   - 「复制」永远使用最新的编辑后数据
 - **LOG 高亮** —— 自动按 `ERROR` / `WARN` / `INFO` / `DEBUG` / `TRACE` 上色
 - **亮白 / 暗黑双主题**(GitHub Light + VS Code Dark),右上角一键切换
-- **每种格式可单独启用/禁用** —— 在扩展弹窗里设置,跨页面跨会话持久化
-- **零运行时依赖** —— 所有渲染器均为手写 TypeScript,`npm run build` 只跑 `tsc` + 一段后处理脚本
 
 ---
 
