@@ -96,6 +96,11 @@ body.fv-body {
   overflow-y: scroll;
 }
 
+/* User-selectable content font size (toolbar/badges keep their own sizes) */
+body.fv-size-small  { --fv-font-size: 14px; }
+body.fv-size-medium { --fv-font-size: 18px; }
+body.fv-size-large  { --fv-font-size: 22px; }
+
 /* ── Scrollbar ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -172,8 +177,10 @@ body.fv-body {
   top: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
-  background: #1f2328;
-  color: #fff;
+  background: var(--fv-bg-toolbar);
+  color: var(--fv-text);
+  border: 1px solid var(--fv-border);
+  box-shadow: var(--fv-shadow);
   font-size: 11px;
   font-family: var(--fv-font-sans);
   padding: 3px 8px;
@@ -502,7 +509,7 @@ body.fv-body {
 /* ── Markdown Viewer ────────────────────────────────────────── */
 .fv-md-root {
   font-family: var(--fv-font-sans);
-  font-size: 15px;
+  font-size: var(--fv-font-size);
   line-height: 1.7;
   max-width: 860px;
   margin: 0 auto;

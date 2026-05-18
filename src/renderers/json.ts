@@ -1,5 +1,5 @@
 import { createToolbar } from '../ui/toolbar';
-import { setupPage, download } from '../ui/common';
+import { setupPage } from '../ui/common';
 
 export function render(raw: string): void {
   let data: unknown;
@@ -34,7 +34,6 @@ export function render(raw: string): void {
       rawDiv.style.display = isRaw ? '' : 'none';
     },
     onCopy: () => navigator.clipboard.writeText(pretty).catch(() => {}),
-    onDownload: () => download(pretty, filename.replace(/\.jsonp?$/, '') + '.json', 'application/json'),
   });
 
   document.body.prepend(toolbar);

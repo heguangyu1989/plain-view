@@ -1,3 +1,5 @@
+import { isZh } from './i18n';
+
 export const THEMES = ['github-light', 'github-dark'] as const;
 export type Theme = typeof THEMES[number];
 
@@ -29,9 +31,10 @@ export function cycleTheme(): Theme {
 }
 
 export function themeLabel(theme: Theme): string {
-  const labels: Record<Theme, string> = {
-    'github-light': '亮白',
-    'github-dark':  '暗黑',
+  const labels: Record<Theme, { zh: string; en: string }> = {
+    'github-light': { zh: '亮白', en: 'Light' },
+    'github-dark':  { zh: '暗黑', en: 'Dark' },
   };
-  return labels[theme];
+  const l = labels[theme];
+  return isZh() ? l.zh : l.en;
 }

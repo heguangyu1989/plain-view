@@ -1,12 +1,14 @@
 // Shared utilities used by every renderer + the content/viewer entry points.
 
 import { applyTheme, getStoredTheme } from './themes';
+import { applyFontSize, getStoredFontSize } from './fontSize';
 
 export function setupPage(title: string): void {
   document.title = title;
   document.body.innerHTML = '';
   document.body.className = 'fv-body';
   applyTheme(getStoredTheme());
+  applyFontSize(getStoredFontSize());
 }
 
 export function escHtml(s: string): string {
@@ -16,14 +18,6 @@ export function escHtml(s: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-}
-
-export function download(content: string, filename: string, mime: string): void {
-  const blob = new Blob([content], { type: mime });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url; a.download = filename; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 // Inject the base stylesheet. Returns a promise that resolves once the

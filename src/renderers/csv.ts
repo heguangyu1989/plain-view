@@ -1,5 +1,5 @@
 import { createToolbar } from '../ui/toolbar';
-import { setupPage, download } from '../ui/common';
+import { setupPage } from '../ui/common';
 
 export function render(raw: string, srcPath?: string): void {
   const path = srcPath ?? location.pathname;
@@ -35,7 +35,6 @@ export function render(raw: string, srcPath?: string): void {
       rawDiv.style.display = isRaw ? '' : 'none';
     },
     onCopy: () => navigator.clipboard.writeText(serializeTable(table, delimiter)).catch(() => {}),
-    onDownload: () => download(serializeTable(table, delimiter), filename, 'text/csv'),
   });
 
   document.body.prepend(searchBar, toolbar);

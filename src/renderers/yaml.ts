@@ -1,5 +1,5 @@
 import { createToolbar } from '../ui/toolbar';
-import { setupPage, escHtml, download } from '../ui/common';
+import { setupPage, escHtml } from '../ui/common';
 
 export function render(raw: string): void {
   const filename = location.pathname.split('/').pop() || 'file.yaml';
@@ -26,7 +26,6 @@ export function render(raw: string): void {
       rawDiv.style.display = isRaw ? '' : 'none';
     },
     onCopy: () => navigator.clipboard.writeText(raw).catch(() => {}),
-    onDownload: () => download(raw, filename, 'application/yaml'),
   });
 
   document.body.prepend(searchBar, toolbar);

@@ -1,11 +1,22 @@
 import { cycleTheme, getStoredTheme, themeLabel } from './themes';
+import { cycleFontSize, getStoredFontSize, fontSizeLabel, FontSize } from './fontSize';
+import { t, isZh } from './i18n';
 
-const REPO_URL = 'https://gitee.com/vv777/plain-view';
+// Chinese locale → Gitee (faster in China); others → GitHub.
+const REPO_URL = isZh()
+  ? 'https://gitee.com/vv777/plain-view'
+  : 'https://github.com/777vv/plain-view';
+
+// "主题：亮白" vs "Theme: Light" — colon style differs between locales.
+const themeTip = (theme: ReturnType<typeof getStoredTheme>): string =>
+  isZh() ? `主题：${themeLabel(theme)}` : `Theme: ${themeLabel(theme)}`;
+
+const fontSizeTip = (size: FontSize): string =>
+  isZh() ? `字号:${fontSizeLabel(size)}` : `Font size: ${fontSizeLabel(size)}`;
 
 export interface ToolbarCallbacks {
   onRaw: (isRaw: boolean) => void;
   onCopy: () => void;
-  onDownload: () => void;
   onSearch?: (query: string) => void;
 }
 
@@ -16,12 +27,12 @@ function icon(svg: string): string {
 const ICONS = {
   raw:      icon('<polyline points="4 6 1 8 4 10"/><polyline points="12 6 15 8 12 10"/><line x1="9" y1="3" x2="7" y2="13"/>'),
   copy:     icon('<rect x="4" y="4" width="8" height="10" rx="1"/><path d="M6 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/>'),
-  download: icon('<path d="M8 2v8m-3-3 3 3 3-3"/><path d="M3 13h10"/>'),
   search:   icon('<circle cx="6.5" cy="6.5" r="4"/><line x1="10" y1="10" x2="14" y2="14"/>'),
   theme:    icon('<circle cx="8" cy="8" r="4"/><line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/>'),
   prevMatch: icon('<polyline points="4 10 8 6 12 10"/>'),
   nextMatch: icon('<polyline points="4 6 8 10 12 6"/>'),
   repo:     icon('<path d="M11 8v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"/><polyline points="9 3 13 3 13 7"/><line x1="13" y1="3" x2="7" y2="9"/>'),
+  fontSize: icon('<path d="M3 14 L8 3 L13 14"/><line x1="5" y1="10" x2="11" y2="10"/>'),
 };
 
 export function createToolbar(
@@ -53,20 +64,20 @@ export function createToolbar(
 
   let searchBtn: HTMLButtonElement | null = null;
   if (callbacks.onSearch) {
-    searchBtn = btn(ICONS.search, '搜索 (Ctrl+F)');
+    searchBtn = btn(ICONS.search, t('搜索 (Ctrl+F)', 'Search (Ctrl+F)'));
   }
 
-  const rawBtn   = btn(ICONS.raw, '切换原始内容');
-  const copyBtn  = btn(ICONS.copy, '复制');
-  const dlBtn    = btn(ICONS.download, '下载');
-  const themeBtn = btn(ICONS.theme, `主题：${themeLabel(getStoredTheme())}`);
-  const repoBtn  = btn(ICONS.repo, '查看源码 (Gitee)');
+  const rawBtn      = btn(ICONS.raw, t('切换原始内容', 'Show raw'));
+  const copyBtn     = btn(ICONS.copy, t('复制', 'Copy'));
+  const themeBtn    = btn(ICONS.theme, themeTip(getStoredTheme()));
+  const fontSizeBtn = btn(ICONS.fontSize, fontSizeTip(getStoredFontSize()));
+  const repoBtn     = btn(ICONS.repo, t('查看源码', 'View source'));
 
   const divider = document.createElement('div');
   divider.className = 'fv-divider';
 
   if (searchBtn) right.append(searchBtn, divider.cloneNode() as HTMLElement);
-  right.append(rawBtn, copyBtn, dlBtn, divider, themeBtn, divider.cloneNode() as HTMLElement, repoBtn);
+  right.append(rawBtn, copyBtn, divider, themeBtn, fontSizeBtn, divider.cloneNode() as HTMLElement, repoBtn);
   toolbar.append(left, right);
 
   // ── Search Bar ────────────────────────────────────────────────
@@ -76,22 +87,22 @@ export function createToolbar(
   const closeBtn = document.createElement('button');
   closeBtn.className = 'fv-search-close';
   closeBtn.textContent = '×';
-  closeBtn.dataset.tip = '关闭搜索 (Esc)';
+  closeBtn.dataset.tip = t('关闭搜索 (Esc)', 'Close search (Esc)');
 
   const prevBtn = document.createElement('button');
   prevBtn.className = 'fv-search-nav';
   prevBtn.innerHTML = ICONS.prevMatch;
-  prevBtn.dataset.tip = '上一个 (Shift+Enter)';
+  prevBtn.dataset.tip = t('上一个 (Shift+Enter)', 'Previous (Shift+Enter)');
 
   const nextBtn = document.createElement('button');
   nextBtn.className = 'fv-search-nav';
   nextBtn.innerHTML = ICONS.nextMatch;
-  nextBtn.dataset.tip = '下一个 (Enter)';
+  nextBtn.dataset.tip = t('下一个 (Enter)', 'Next (Enter)');
 
   const searchInput = document.createElement('input');
   searchInput.className = 'fv-search-input';
   searchInput.type = 'text';
-  searchInput.placeholder = '搜索…';
+  searchInput.placeholder = t('搜索…', 'Search…');
 
   const countSpan = document.createElement('span');
   countSpan.className = 'fv-search-count';
@@ -124,7 +135,7 @@ export function createToolbar(
 
   function updateCount(): void {
     if (highlights.length === 0) {
-      countSpan.textContent = searchInput.value.trim() ? '无结果' : '';
+      countSpan.textContent = searchInput.value.trim() ? t('无结果', 'No results') : '';
     } else {
       countSpan.textContent = `${currentIdx + 1} / ${highlights.length}`;
     }
@@ -136,7 +147,9 @@ export function createToolbar(
   rawBtn.addEventListener('click', () => {
     isRaw = !isRaw;
     rawBtn.classList.toggle('active', isRaw);
-    rawBtn.dataset.tip = isRaw ? '显示格式化视图' : '切换原始内容';
+    rawBtn.dataset.tip = isRaw
+      ? t('显示格式化视图', 'Show formatted')
+      : t('切换原始内容', 'Show raw');
     callbacks.onRaw(isRaw);
   });
 
@@ -147,11 +160,14 @@ export function createToolbar(
     setTimeout(() => { copyBtn.innerHTML = orig; }, 1200);
   });
 
-  dlBtn.addEventListener('click', () => callbacks.onDownload());
-
   themeBtn.addEventListener('click', () => {
     const next = cycleTheme();
-    themeBtn.dataset.tip = `主题：${themeLabel(next)}`;
+    themeBtn.dataset.tip = themeTip(next);
+  });
+
+  fontSizeBtn.addEventListener('click', () => {
+    const next = cycleFontSize();
+    fontSizeBtn.dataset.tip = fontSizeTip(next);
   });
 
   repoBtn.addEventListener('click', () => {

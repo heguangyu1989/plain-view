@@ -1,5 +1,5 @@
 import { createToolbar } from '../ui/toolbar';
-import { setupPage, download } from '../ui/common';
+import { setupPage } from '../ui/common';
 
 type Level = 'error' | 'warn' | 'info' | 'debug' | 'trace' | '';
 
@@ -37,7 +37,6 @@ export function render(raw: string): void {
       rawDiv.style.display = isRaw ? '' : 'none';
     },
     onCopy: () => navigator.clipboard.writeText(raw).catch(() => {}),
-    onDownload: () => download(raw, filename, 'text/plain'),
   });
 
   document.body.prepend(toolbar);
