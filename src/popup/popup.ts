@@ -10,6 +10,8 @@ const FORMATS: { id: string; label: string }[] = [
 ];
 
 const DISABLED_KEY = 'disabledFormats';
+const LOCAL_ONLY_KEY = 'localFilesOnly';
+const DISABLED_HOSTS_KEY = 'disabledHosts';
 
 async function getDisabled(): Promise<Set<string>> {
   const data = await chrome.storage.local.get(DISABLED_KEY);
@@ -20,9 +22,29 @@ async function setDisabled(disabled: Set<string>): Promise<void> {
   await chrome.storage.local.set({ [DISABLED_KEY]: [...disabled] });
 }
 
+async function getLocalOnly(): Promise<boolean> {
+  const data = await chrome.storage.local.get(LOCAL_ONLY_KEY);
+  return !!data[LOCAL_ONLY_KEY];
+}
+
+async function setLocalOnly(value: boolean): Promise<void> {
+  await chrome.storage.local.set({ [LOCAL_ONLY_KEY]: value });
+}
+
+async function getDisabledHosts(): Promise<string[]> {
+  const data = await chrome.storage.local.get(DISABLED_HOSTS_KEY);
+  return (data[DISABLED_HOSTS_KEY] as string[]) ?? [];
+}
+
+async function setDisabledHosts(hosts: string[]): Promise<void> {
+  await chrome.storage.local.set({ [DISABLED_HOSTS_KEY]: hosts });
+}
+
 // ── Init ──────────────────────────────────────────────────────
 
 const disabled = await getDisabled();
+const localOnly = await getLocalOnly();
+const disabledHosts = await getDisabledHosts();
 
 // Theme buttons
 const themeGrid = document.getElementById('theme-grid')!;
@@ -74,6 +96,21 @@ FORMATS.forEach(({ id, label }) => {
   switchWrap.append(input, track);
   row.append(nameEl, switchWrap);
   toggleContainer.appendChild(row);
+});
+
+// Host settings
+const localOnlyToggle = document.getElementById('local-only-toggle') as HTMLInputElement;
+localOnlyToggle.checked = localOnly;
+localOnlyToggle.addEventListener('change', () => setLocalOnly(localOnlyToggle.checked));
+
+const disabledHostsTextarea = document.getElementById('disabled-hosts') as HTMLTextAreaElement;
+disabledHostsTextarea.value = disabledHosts.join('\n');
+disabledHostsTextarea.addEventListener('change', () => {
+  const hosts = disabledHostsTextarea.value
+    .split('\n')
+    .map(h => h.trim().toLowerCase())
+    .filter(h => h.length > 0);
+  setDisabledHosts(hosts);
 });
 
 // Status: query active tab for current format

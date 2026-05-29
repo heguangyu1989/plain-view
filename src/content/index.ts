@@ -4,6 +4,44 @@
 
 type FileFormat = 'json' | 'markdown' | 'sql' | 'yaml' | 'csv' | 'log';
 
+/**
+ * Check if hostname matches a pattern (supports * wildcard).
+ * Pattern examples:
+ *   - "example.com" matches exactly "example.com"
+ *   - "*.github.com" matches "api.github.com", "raw.github.com", etc.
+ *   - "github.com" also matches subdomains like "api.github.com"
+ */
+function hostMatches(hostname: string, pattern: string): boolean {
+  const host = hostname.toLowerCase();
+  const pat = pattern.toLowerCase().replace(/^\*\./, '');
+
+  if (pattern.startsWith('*.')) {
+    return host === pat || host.endsWith('.' + pat);
+  }
+  return host === pat || host.endsWith('.' + pat);
+}
+
+async function shouldEnableOnHost(hostname: string): Promise<boolean> {
+  const { localFilesOnly } = await chrome.storage.local.get('localFilesOnly');
+
+  // Local files only mode: only enable on file:// protocol
+  if (localFilesOnly) {
+    return location.protocol === 'file:';
+  }
+
+  // Check disabled hosts list
+  const { disabledHosts } = await chrome.storage.local.get('disabledHosts');
+  if (Array.isArray(disabledHosts)) {
+    for (const pattern of disabledHosts) {
+      if (hostMatches(hostname, pattern)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 function getRawContent(): string {
   // Chrome wraps raw text/JSON responses in <pre>
   const pre = document.querySelector('pre');
@@ -79,6 +117,10 @@ function injectStyles(): Promise<void> {
   try {
     if (location.protocol === 'chrome-extension:' || location.protocol === 'devtools:') return;
     if (!document.body) return;
+
+    // Check host-based enable/disable settings
+    const hostEnabled = await shouldEnableOnHost(location.hostname);
+    if (!hostEnabled) return;
 
     const format = detectFormat();
     if (!format) return;

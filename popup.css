@@ -145,3 +145,26 @@ body {
   box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 .toggle-switch input:checked + .toggle-track::after { transform: translateX(14px); }
+
+/* Host list textarea */
+.host-list-row { margin-top: 10px; }
+.host-list-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+#disabled-hosts {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  resize: vertical;
+}
+#disabled-hosts:focus {
+  outline: none;
+  border-color: var(--accent);
+}

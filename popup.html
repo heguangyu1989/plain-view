@@ -32,6 +32,23 @@
     </div>
   </section>
 
+  <section class="popup-section">
+    <div class="section-label">Host settings</div>
+
+    <div class="format-row">
+      <span class="format-name">Local files only</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="local-only-toggle">
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+
+    <div class="host-list-row">
+      <div class="host-list-label">Disabled hosts (one per line)</div>
+      <textarea id="disabled-hosts" rows="3" placeholder="example.com&#10;*.github.com"></textarea>
+    </div>
+  </section>
+
   <script type="module" src="dist/popup/popup.js"></script>
 </body>
 </html>
