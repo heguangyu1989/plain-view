@@ -36,9 +36,9 @@
     <div class="section-label">Host settings</div>
 
     <div class="format-row">
-      <span class="format-name">Local files only</span>
+      <span class="format-name">Local files</span>
       <label class="toggle-switch">
-        <input type="checkbox" id="local-only-toggle">
+        <input type="checkbox" id="local-files-toggle">
         <span class="toggle-track"></span>
       </label>
     </div>
@@ -46,6 +46,11 @@
     <div class="host-list-row">
       <div class="host-list-label">Disabled hosts (one per line)</div>
       <textarea id="disabled-hosts" rows="3" placeholder="example.com&#10;*.github.com"></textarea>
+    </div>
+
+    <div class="host-list-row">
+      <div class="host-list-label">Website whitelist (one per line; empty = all)</div>
+      <textarea id="allowed-hosts" rows="3" placeholder="example.com&#10;*.github.com"></textarea>
     </div>
   </section>
 

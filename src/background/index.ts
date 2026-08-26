@@ -11,10 +11,16 @@ chrome.downloads.onCreated.addListener((item) => {
   if (!/^file:\/\//i.test(url)) return;        // only local files
   if (!/\.(csv|tsv)$/i.test(url)) return;       // only the formats Chrome downloads
 
-  chrome.downloads.cancel(item.id)
-    .then(() => chrome.downloads.erase({ id: item.id }))
-    .catch(() => { /* download may already be gone */ });
+  // Respect the popup's Local files setting. Missing storage keeps the
+  // historical default of rendering local files.
+  chrome.storage.local.get('localFiles').then(({ localFiles }) => {
+    if (localFiles === false) return;
 
-  const viewer = chrome.runtime.getURL('viewer.html') + '?src=' + encodeURIComponent(url);
-  chrome.tabs.create({ url: viewer });
+    chrome.downloads.cancel(item.id)
+      .then(() => chrome.downloads.erase({ id: item.id }))
+      .catch(() => { /* download may already be gone */ });
+
+    const viewer = chrome.runtime.getURL('viewer.html') + '?src=' + encodeURIComponent(url);
+    chrome.tabs.create({ url: viewer });
+  });
 });

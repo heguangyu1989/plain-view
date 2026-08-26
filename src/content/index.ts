@@ -13,30 +13,43 @@ type FileFormat = 'json' | 'markdown' | 'sql' | 'yaml' | 'csv' | 'log';
  */
 function hostMatches(hostname: string, pattern: string): boolean {
   const host = hostname.toLowerCase();
-  const pat = pattern.toLowerCase().replace(/^\*\./, '');
+  const normalizedPattern = pattern.trim().toLowerCase();
+  const pat = normalizedPattern.replace(/^\*\./, '');
 
-  if (pattern.startsWith('*.')) {
+  if (normalizedPattern.startsWith('*.')) {
     return host === pat || host.endsWith('.' + pat);
   }
   return host === pat || host.endsWith('.' + pat);
 }
 
 async function shouldEnableOnHost(hostname: string): Promise<boolean> {
-  const { localFilesOnly } = await chrome.storage.local.get('localFilesOnly');
+  const {
+    localFiles,
+    disabledHosts,
+    allowedHosts,
+  } = await chrome.storage.local.get(['localFiles', 'disabledHosts', 'allowedHosts']);
 
-  // Local files only mode: only enable on file:// protocol
-  if (localFilesOnly) {
-    return location.protocol === 'file:';
+  // Local files are controlled independently from website matching.
+  if (location.protocol === 'file:') {
+    // Local-file rendering stays enabled by default. The new setting can
+    // explicitly turn it off; the legacy setting is intentionally ignored for
+    // this renamed (non-"only") option.
+    return localFiles === undefined ? true : !!localFiles;
   }
 
   // Check disabled hosts list
-  const { disabledHosts } = await chrome.storage.local.get('disabledHosts');
   if (Array.isArray(disabledHosts)) {
     for (const pattern of disabledHosts) {
-      if (hostMatches(hostname, pattern)) {
+      if (typeof pattern === 'string' && hostMatches(hostname, pattern)) {
         return false;
       }
     }
+  }
+
+  // If a whitelist has entries, only matching websites are enabled. An empty
+  // whitelist keeps the previous behaviour and allows all websites.
+  if (Array.isArray(allowedHosts) && allowedHosts.length > 0) {
+    return allowedHosts.some((pattern) => typeof pattern === 'string' && hostMatches(hostname, pattern));
   }
 
   return true;

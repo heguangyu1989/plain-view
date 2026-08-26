@@ -10,8 +10,9 @@ const FORMATS: { id: string; label: string }[] = [
 ];
 
 const DISABLED_KEY = 'disabledFormats';
-const LOCAL_ONLY_KEY = 'localFilesOnly';
+const LOCAL_FILES_KEY = 'localFiles';
 const DISABLED_HOSTS_KEY = 'disabledHosts';
+const ALLOWED_HOSTS_KEY = 'allowedHosts';
 
 async function getDisabled(): Promise<Set<string>> {
   const data = await chrome.storage.local.get(DISABLED_KEY);
@@ -22,13 +23,16 @@ async function setDisabled(disabled: Set<string>): Promise<void> {
   await chrome.storage.local.set({ [DISABLED_KEY]: [...disabled] });
 }
 
-async function getLocalOnly(): Promise<boolean> {
-  const data = await chrome.storage.local.get(LOCAL_ONLY_KEY);
-  return !!data[LOCAL_ONLY_KEY];
+async function getLocalFiles(): Promise<boolean> {
+  const data = await chrome.storage.local.get(LOCAL_FILES_KEY);
+  // Local files were enabled by default before this setting was renamed.
+  // Keep that default for new and upgraded installations.
+  if (data[LOCAL_FILES_KEY] !== undefined) return !!data[LOCAL_FILES_KEY];
+  return true;
 }
 
-async function setLocalOnly(value: boolean): Promise<void> {
-  await chrome.storage.local.set({ [LOCAL_ONLY_KEY]: value });
+async function setLocalFiles(value: boolean): Promise<void> {
+  await chrome.storage.local.set({ [LOCAL_FILES_KEY]: value });
 }
 
 async function getDisabledHosts(): Promise<string[]> {
@@ -40,11 +44,21 @@ async function setDisabledHosts(hosts: string[]): Promise<void> {
   await chrome.storage.local.set({ [DISABLED_HOSTS_KEY]: hosts });
 }
 
+async function getAllowedHosts(): Promise<string[]> {
+  const data = await chrome.storage.local.get(ALLOWED_HOSTS_KEY);
+  return (data[ALLOWED_HOSTS_KEY] as string[]) ?? [];
+}
+
+async function setAllowedHosts(hosts: string[]): Promise<void> {
+  await chrome.storage.local.set({ [ALLOWED_HOSTS_KEY]: hosts });
+}
+
 // ── Init ──────────────────────────────────────────────────────
 
 const disabled = await getDisabled();
-const localOnly = await getLocalOnly();
+const localFiles = await getLocalFiles();
 const disabledHosts = await getDisabledHosts();
+const allowedHosts = await getAllowedHosts();
 
 // Theme buttons
 const themeGrid = document.getElementById('theme-grid')!;
@@ -99,9 +113,9 @@ FORMATS.forEach(({ id, label }) => {
 });
 
 // Host settings
-const localOnlyToggle = document.getElementById('local-only-toggle') as HTMLInputElement;
-localOnlyToggle.checked = localOnly;
-localOnlyToggle.addEventListener('change', () => setLocalOnly(localOnlyToggle.checked));
+const localFilesToggle = document.getElementById('local-files-toggle') as HTMLInputElement;
+localFilesToggle.checked = localFiles;
+localFilesToggle.addEventListener('change', () => setLocalFiles(localFilesToggle.checked));
 
 const disabledHostsTextarea = document.getElementById('disabled-hosts') as HTMLTextAreaElement;
 disabledHostsTextarea.value = disabledHosts.join('\n');
@@ -111,6 +125,16 @@ disabledHostsTextarea.addEventListener('change', () => {
     .map(h => h.trim().toLowerCase())
     .filter(h => h.length > 0);
   setDisabledHosts(hosts);
+});
+
+const allowedHostsTextarea = document.getElementById('allowed-hosts') as HTMLTextAreaElement;
+allowedHostsTextarea.value = allowedHosts.join('\n');
+allowedHostsTextarea.addEventListener('change', () => {
+  const hosts = allowedHostsTextarea.value
+    .split('\n')
+    .map(h => h.trim().toLowerCase())
+    .filter(h => h.length > 0);
+  setAllowedHosts(hosts);
 });
 
 // Status: query active tab for current format

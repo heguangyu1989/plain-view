@@ -87,6 +87,7 @@ Compiled output lands in `dist/`. Then follow the "Load the extension" step abov
 - **Local files**: drag any supported file into the browser. CSV / TSV are intercepted and opened in the preview page
 - **Toolbar**: top-right buttons toggle raw/formatted view, copy, switch theme, adjust font size, view source
 - **Extension popup**: click the Plain View icon in the browser toolbar to switch themes or disable specific formats
+- **Host settings**: enable local-file rendering, disable specific hosts, or add a website whitelist (one host pattern per line; an empty whitelist allows all websites)
 
 ---
 
