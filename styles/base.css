@@ -6,7 +6,7 @@
   --fv-font-mono: 'Consolas', 'Cascadia Code', 'Menlo', 'Monaco', monospace;
   --fv-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --fv-font-size: 18px;
-  --fv-line-height: 1.65;
+  --fv-line-height: 1.6;
 
   /* Layout */
   --fv-toolbar-h: 46px;
@@ -24,17 +24,17 @@
   --fv-text-link:     #0969da;
 
   /* Syntax tokens */
-  --fv-key:           #c41a16;
-  --fv-string:        #2a00ff;
-  --fv-number:        #2a00ff;
-  --fv-boolean:       #2a00ff;
-  --fv-null:          #2a00ff;
+  --fv-key:           #0550ae;
+  --fv-string:        #0a3069;
+  --fv-number:        #0550ae;
+  --fv-boolean:       #cf222e;
+  --fv-null:          #cf222e;
   --fv-keyword:       #cf222e;
   --fv-comment:       #6e7781;
   --fv-function:      #8250df;
   --fv-operator:      #cf222e;
   --fv-tag:           #116329;
-  --fv-punct:         #6e7781;
+  --fv-punct:         #57606a;
 
   /* Log levels */
   --fv-log-error:     #cf222e;
@@ -55,29 +55,40 @@
   --fv-scroll-hover:  #a8b1ba;
 }
 
-/* ── Theme: 暗黑 (VS Code Dark) ─────────────────────────────── */
+/* ── Theme: GitHub Dark ────────────────────────────────────── */
 [data-fv-theme="github-dark"] {
-  --fv-bg:            #1e1e1e;
-  --fv-bg-toolbar:    #252526;
-  --fv-bg-hover:      #2a2d2e;
-  --fv-bg-search:     #1e1e1e;
-  --fv-border:        #3c3c3c;
-  --fv-text:          #d4d4d4;
-  --fv-text-muted:    #858585;
-  --fv-text-link:     #4ec9b0;
+  --fv-bg:            #0d1117;
+  --fv-bg-toolbar:    #161b22;
+  --fv-bg-hover:      #21262d;
+  --fv-bg-search:     #0d1117;
+  --fv-border:        #30363d;
+  --fv-text:          #e6edf3;
+  --fv-text-muted:    #8b949e;
+  --fv-text-link:     #58a6ff;
 
-  /* JSON 语法配色 */
-  --fv-key:           #9cdcfe;
-  --fv-string:        #ce9178;
-  --fv-number:        #b5cea8;
-  --fv-boolean:       #569cd6;
-  --fv-null:          #569cd6;
-  --fv-punct:         #d4d4d4;
+  /* GitHub Primer syntax colors */
+  --fv-key:           #79c0ff;
+  --fv-string:        #a5d6ff;
+  --fv-number:        #79c0ff;
+  --fv-boolean:       #ff7b72;
+  --fv-null:          #ff7b72;
+  --fv-keyword:       #ff7b72;
+  --fv-comment:       #8b949e;
+  --fv-function:      #d2a8ff;
+  --fv-operator:      #ff7b72;
+  --fv-tag:           #7ee787;
+  --fv-punct:         #8b949e;
+
+  --fv-log-error:     #ff7b72;
+  --fv-log-warn:      #d29922;
+  --fv-log-info:      #79c0ff;
+  --fv-log-debug:     #8b949e;
+  --fv-log-trace:     #d2a8ff;
 
   --fv-badge-bg:      #1f3548;
-  --fv-badge-text:    #9cdcfe;
-  --fv-scroll:        #424242;
-  --fv-scroll-hover:  #686868;
+  --fv-badge-text:    #79c0ff;
+  --fv-scroll:        #30363d;
+  --fv-scroll-hover:  #484f58;
 }
 
 
